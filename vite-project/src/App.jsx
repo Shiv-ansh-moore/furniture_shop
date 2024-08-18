@@ -1,6 +1,10 @@
+import Widget from "./components/Widget"
+
 const App = () => {
   return (
-    <div className="">App</div>
+    <>
+    <Widget></Widget>
+    </>
   )
 }
 export default App
