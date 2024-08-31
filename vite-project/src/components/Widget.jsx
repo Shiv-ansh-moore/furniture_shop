@@ -2,14 +2,27 @@ import Logo from "./Logo";
 import Form from "./Form";
 import User_messages from "./User_messages";
 import Bot_messages from "./Bot_messages";
+import { useEffect, useState } from "react";
 
 const Widget = () => {
+  const [userMessage, setUserMessage] = useState()
+
+  useEffect(() =>{
+    
+  }, [userMessage])
+
   return (
     <div className="fixed bottom-[20px] right-[20px] flex h-[700px] w-[500px] flex-col overflow-auto rounded-xl border-2 border-ikea-yellow pb-[60px]">
-      <Logo />
-      <User_messages />
-      <Form />
-      <Bot_messages />
+      <div className="flex-1 overflow-auto">
+        <Logo />
+        <User_messages message={userMessage}/>
+        <Bot_messages />
+      </div>
+      <div className="mt-1">
+        <Form
+          change_user_message={(userMessage) => setUserMessage(userMessage)}
+        />
+      </div>
     </div>
   );
 };
