@@ -1,17 +1,11 @@
-const Form = (props) => {
+const Form = () => {
   return (
-    <form
-      className="flex"
-      onSubmit={(e) => {
-        e.preventDefault();
-        props.change_user_message(e.target.userMessage.value);
-      }}
-    >
-      <div className="absolute bottom-[20px] left-[20px] h-[40px] w-[460px] rounded-xl bg-ikea-grey">
+    <form className="flex">
+      <div className="absolute bottom-[20px] left-[20px] h-[40px] w-[90%] rounded-xl bg-ikea-grey">
         <input
           type="text"
           name="userMessage"
-          className="h-[40px] w-[460px] rounded-xl bg-ikea-grey"
+          className="h-[40px] w-[100%] rounded-xl bg-ikea-grey"
         />
         <button
           type="submit"
