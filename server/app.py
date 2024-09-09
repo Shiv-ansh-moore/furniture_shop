@@ -1,18 +1,19 @@
-from flask import Flask, session, stream_with_context
+from flask import Flask, session, stream_with_context, Response
 from flask_session import Session
 from openai import OpenAI
 from openai import AssistantEventHandler
 from typing_extensions import override
+import queue
 
 app = Flask(__name__)
 app.config['SESSION_PERMANENT'] = False
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
-#TODO: Get the enviorment variable working!!!!!!!
 client = OpenAI(api_key="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")
 
-#TODO: Send the stuff as server sent events
+clients = []
+
 class EventHandler(AssistantEventHandler):    
   @override
   def on_text_created(self, text) -> None:
@@ -20,7 +21,9 @@ class EventHandler(AssistantEventHandler):
       
   @override
   def on_text_delta(self, delta, snapshot):
-    print(delta.value, end="", flush=True)
+      for client in clients:
+          client.put(delta.value)
+
 
 def create_thread():
     thread = client.beta.threads.create()
@@ -41,6 +44,20 @@ def stream_run(thread_id):
     event_handler=EventHandler(),
     ) as stream:
         stream.until_done()
+
+@app.route("/events")
+def events():
+    def event_stream():
+        client = queue.Queue()
+        clients.append(client)
+        try:
+            while True:
+                result = client.get()
+                yield f"data: {result}\n\n"
+        except GeneratorExit:
+            clients.remove(client)
+
+    return Response(stream_with_context(event_stream()), content_type='text/event-stream')
 
 
 
