@@ -56,7 +56,6 @@ def events():
                 yield f"data: {result}\n\n"
         except GeneratorExit:
             clients.remove(client)
-
     return Response(stream_with_context(event_stream()), content_type='text/event-stream')
 
 
