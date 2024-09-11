@@ -5,6 +5,14 @@ import Bot_messages from "./Bot_messages";
 import { useEffect, useState } from "react";
 
 const Widget = () => {
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Thread_id", data.thread_id);
+      });
+  }, []);
+
   const [messages, setMessages] = useState([]);
 
   // add user messages to messages array

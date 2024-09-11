@@ -1,14 +1,16 @@
-from flask import Flask, session, stream_with_context, Response
+from flask import Flask, session, stream_with_context, Response, request, jsonify
 from flask_session import Session
 from openai import OpenAI
 from openai import AssistantEventHandler
 from typing_extensions import override
+from flask_cors import CORS
 import queue
 
 app = Flask(__name__)
 app.config['SESSION_PERMANENT'] = False
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
+CORS(app)
 
 client = OpenAI(api_key="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")
 
@@ -21,6 +23,7 @@ class EventHandler(AssistantEventHandler):
       
   @override
   def on_text_delta(self, delta, snapshot):
+      print(delta)
       for client in clients:
           client.put(delta.value)
 
@@ -45,6 +48,20 @@ def stream_run(thread_id):
     ) as stream:
         stream.until_done()
 
+@app.route("/")
+def initial_setup():
+    thread = create_thread()
+    #TODO:set thread_id in cookies
+    session["thread_id"] = thread.id
+    return jsonify({"thread_id": session.get("thread_id")})
+
+@app.route("/onSubmit", methods=["POST"])
+def run_this_bitch():
+    thread_id = session.get("thred_id")
+    input = request.json.get("input")
+    add_message_to_thread(thread_id=thread_id, user_message=input)
+    stream_run(thread_id=thread_id)
+
 @app.route("/events")
 def events():
     def event_stream():
@@ -57,8 +74,6 @@ def events():
         except GeneratorExit:
             clients.remove(client)
     return Response(stream_with_context(event_stream()), content_type='text/event-stream')
-
-
 
 
 if __name__ == '__main__':
