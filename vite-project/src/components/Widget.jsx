@@ -5,8 +5,15 @@ import Bot_messages from "./Bot_messages";
 import { useEffect, useState } from "react";
 
 const Widget = () => {
-
   const [threadId, setThreadId] = useState();
+
+  useEffect(() => {
+    const sse = new EventSource("http://127.0.0.1:5000/events");
+    function handleStream(data) {
+      console.log(data);
+    }
+    sse.onmessage = (e) => handleStream(e.data);
+  });
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000")
@@ -32,9 +39,10 @@ const Widget = () => {
         {messages.map((message, index) => (
           <User_messages key={index} message={message} />
         ))}
+        <Bot_messages></Bot_messages>
       </div>
       <div className="mt-1">
-        <Form addUserMessage={addUserMessage} thread_id={threadId}/>
+        <Form addUserMessage={addUserMessage} thread_id={threadId} />
       </div>
     </div>
   );
