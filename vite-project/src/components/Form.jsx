@@ -13,7 +13,7 @@ const Form = (props) => {
         headers: {
           "Content-Type": "application/json", // Sending JSON data
         },
-        body: JSON.stringify({ input: message, thread_id:props.thread_id }),
+        body: JSON.stringify({ input: message, thread_id: props.thread_id }),
       });
       setMessage(""); // Clear the input field
     }
@@ -28,7 +28,7 @@ const Form = (props) => {
           name="userMessage"
           value={message}
           onChange={(e) => setMessage(e.target.value)} // Update the message state on input change
-          className="h-[40px] w-[100%] rounded-xl bg-ikea-grey"
+          className="h-[40px] w-[100%] rounded-xl bg-ikea-grey p-1"
         />
         <button
           type="submit"

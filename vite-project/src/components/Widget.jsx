@@ -13,7 +13,7 @@ const Widget = () => {
       console.log(data);
     }
     sse.onmessage = (e) => handleStream(e.data);
-  });
+  }, []);
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000")
@@ -36,10 +36,13 @@ const Widget = () => {
     <div className="fixed bottom-[20px] right-[20px] flex h-[80vh] max-h-[700px] w-[30vw] min-w-[450px] max-w-[500px] flex-col overflow-auto rounded-xl border-2 border-ikea-yellow pb-[60px]">
       <div className="flex-1 overflow-auto">
         <Logo />
-        {messages.map((message, index) => (
-          <User_messages key={index} message={message} />
-        ))}
-        <Bot_messages></Bot_messages>
+        {messages.map((message, index) =>
+          message.type === "user" ? (
+            <User_messages key={index} message={message} />
+          ) : (
+            <Bot_messages key={index} message={msg.text} />
+          ),
+        )}
       </div>
       <div className="mt-1">
         <Form addUserMessage={addUserMessage} thread_id={threadId} />
