@@ -5,10 +5,14 @@ import Bot_messages from "./Bot_messages";
 import { useEffect, useState } from "react";
 
 const Widget = () => {
+
+  const [threadId, setThreadId] = useState();
+
   useEffect(() => {
     fetch("http://127.0.0.1:5000")
       .then((response) => response.json())
       .then((data) => {
+        setThreadId(data.thread_id);
         console.log("Thread_id", data.thread_id);
       });
   }, []);
@@ -30,7 +34,7 @@ const Widget = () => {
         ))}
       </div>
       <div className="mt-1">
-        <Form addUserMessage={addUserMessage} />
+        <Form addUserMessage={addUserMessage} thread_id={threadId}/>
       </div>
     </div>
   );

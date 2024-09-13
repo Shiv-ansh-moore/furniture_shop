@@ -1,5 +1,4 @@
-from flask import Flask, session, stream_with_context, Response, request, jsonify
-from flask_session import Session
+from flask import Flask, stream_with_context, Response, request, jsonify
 from openai import OpenAI
 from openai import AssistantEventHandler
 from typing_extensions import override
@@ -7,9 +6,6 @@ from flask_cors import CORS
 import queue
 
 app = Flask(__name__)
-app.config['SESSION_PERMANENT'] = False
-app.config['SESSION_TYPE'] = 'filesystem'
-Session(app)
 CORS(app)
 
 client = OpenAI(api_key="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")
@@ -52,15 +48,15 @@ def stream_run(thread_id):
 def initial_setup():
     thread = create_thread()
     #TODO:set thread_id in cookies
-    session["thread_id"] = thread.id
-    return jsonify({"thread_id": session.get("thread_id")})
+    return jsonify({"thread_id": thread.id})
 
 @app.route("/onSubmit", methods=["POST"])
 def run_this_bitch():
-    thread_id = session.get("thred_id")
+    thread_id = request.json.get("thread_id")
     input = request.json.get("input")
     add_message_to_thread(thread_id=thread_id, user_message=input)
     stream_run(thread_id=thread_id)
+    return("", 204)
 
 @app.route("/events")
 def events():
