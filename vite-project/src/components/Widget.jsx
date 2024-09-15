@@ -26,11 +26,10 @@ const Widget = () => {
 
   const [messages, setMessages] = useState([]);
 
-  // add user messages to messages array
+  // add the bot messages to the array
   const addUserMessage = (userMessage) => {
     setMessages([...messages, { type: "user", text: userMessage }]);
   };
-  // display user messages
 
   return (
     <div className="fixed bottom-[20px] right-[20px] flex h-[80vh] max-h-[700px] w-[30vw] min-w-[450px] max-w-[500px] flex-col overflow-auto rounded-xl border-2 border-ikea-yellow pb-[60px]">
@@ -40,7 +39,7 @@ const Widget = () => {
           message.type === "user" ? (
             <User_messages key={index} message={message} />
           ) : (
-            <Bot_messages key={index} message={msg.text} />
+            <Bot_messages key={index} message={message} />
           ),
         )}
       </div>

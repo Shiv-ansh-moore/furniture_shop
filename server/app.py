@@ -47,7 +47,6 @@ def stream_run(thread_id):
 @app.route("/")
 def initial_setup():
     thread = create_thread()
-    #TODO:set thread_id in cookies
     return jsonify({"thread_id": thread.id})
 
 @app.route("/onSubmit", methods=["POST"])
