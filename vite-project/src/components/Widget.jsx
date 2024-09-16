@@ -8,12 +8,21 @@ const Widget = () => {
   const [threadId, setThreadId] = useState();
 
   useEffect(() => {
-    const sse = new EventSource("http://127.0.0.1:5000/events");
-    function handleStream(data) {
-      console.log(data);
+    if (threadId) {
+      const sse = new EventSource(
+        `http://127.0.0.1:5000/events?id=${threadId}`,
+      );
+      function handleStream(data) {
+        console.log(data);
+      }
+      sse.onmessage = (e) => handleStream(e.data);
+
+      // Cleanup function to close the EventSource when the component unmounts or threadId changes
+      return () => {
+        sse.close();
+      };
     }
-    sse.onmessage = (e) => handleStream(e.data);
-  }, []);
+  }, [threadId]);
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000")

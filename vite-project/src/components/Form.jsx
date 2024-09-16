@@ -8,12 +8,12 @@ const Form = (props) => {
     e.preventDefault(); // Prevent form from refreshing the page
     if (message.trim()) {
       props.addUserMessage(message); // Pass the message to the function
-      fetch("http://127.0.0.1:5000/onSubmit", {
+      fetch(`http://127.0.0.1:5000/onSubmit?id=${props.thread_id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // Sending JSON data
         },
-        body: JSON.stringify({ input: message, thread_id: props.thread_id }),
+        body: JSON.stringify({ input: message}),
       });
       setMessage(""); // Clear the input field
     }

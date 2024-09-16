@@ -10,9 +10,13 @@ CORS(app)
 
 client = OpenAI(api_key="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")
 
-clients = []
+clients = {}
 
-class EventHandler(AssistantEventHandler):    
+class EventHandler(AssistantEventHandler):
+  def __init__(self, thread_id):
+        super().__init__()
+        self.thread_id = thread_id
+
   @override
   def on_text_created(self, text) -> None:
     print(f"\nassistant > ", end="", flush=True)
@@ -20,8 +24,9 @@ class EventHandler(AssistantEventHandler):
   @override
   def on_text_delta(self, delta, snapshot):
       print(delta)
-      for client in clients:
-          client.put(delta.value)
+      client_queue = clients.get(self.thread_id)
+      if client_queue:
+          client_queue.put(delta.value)
 
 
 def create_thread():
@@ -40,7 +45,7 @@ def stream_run(thread_id):
    with client.beta.threads.runs.stream(
     thread_id=thread_id,
     assistant_id="asst_1zAa3uxrsn8R5mnlLeyZbihD",
-    event_handler=EventHandler(),
+    event_handler=EventHandler(thread_id),
     ) as stream:
         stream.until_done()
 
@@ -51,7 +56,7 @@ def initial_setup():
 
 @app.route("/onSubmit", methods=["POST"])
 def run_this_bitch():
-    thread_id = request.json.get("thread_id")
+    thread_id = request.args.get("id")
     input = request.json.get("input")
     add_message_to_thread(thread_id=thread_id, user_message=input)
     stream_run(thread_id=thread_id)
@@ -60,14 +65,15 @@ def run_this_bitch():
 @app.route("/events")
 def events():
     def event_stream():
-        client = queue.Queue()
-        clients.append(client)
+        thread_id = request.args.get("id")
+        client_que = queue.Queue()
+        clients[thread_id] = client_que
         try:
             while True:
-                result = client.get()
+                result = client_que.get()
                 yield f"data: {result}\n\n"
         except GeneratorExit:
-            clients.remove(client)
+            clients.pop(thread_id, None)
     return Response(stream_with_context(event_stream()), content_type='text/event-stream')
 
 
