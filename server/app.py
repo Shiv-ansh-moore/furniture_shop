@@ -23,6 +23,7 @@ class EventHandler(AssistantEventHandler):
       
   @override
   def on_text_delta(self, delta, snapshot):
+      delta.value = delta.value.replace('\n', '  \n')
       print(delta)
       client_queue = clients.get(self.thread_id)
       if client_queue:

@@ -20,9 +20,7 @@ const markdownComponents = {
   ),
   ol: ({ node, ...props }) => <ol className="ml-5 list-decimal" {...props} />,
   li: ({ node, ...props }) => {
-    const containsImage = node.children.some(
-      (child) => child.tagName === "img",
-    );
+    const containsImage = node.children.some((child) => child.type === "image");
 
     return (
       <li className={`mb-1 ${containsImage ? "list-none" : ""}`} {...props} />
@@ -30,17 +28,20 @@ const markdownComponents = {
   },
 };
 
-const Bot_messages = (props) => {
+const BotMessages = (props) => {
+  const testMessage = "This is line one.  \nThis is line two.\nThis is line three.";
   return (
     <div className="m-3 rounded-xl bg-ikea-grey p-7">
       <ReactMarkdown
         components={markdownComponents}
         remarkPlugins={[remarkGfm]}
+        breaks={true}
       >
-        {props.message}
+        {/* {testMessage} */}
+        {props.message.text}
       </ReactMarkdown>
     </div>
   );
 };
 
-export default Bot_messages;
+export default BotMessages;

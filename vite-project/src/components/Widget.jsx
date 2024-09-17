@@ -6,15 +6,37 @@ import { useEffect, useState } from "react";
 
 const Widget = () => {
   const [threadId, setThreadId] = useState();
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     if (threadId) {
       const sse = new EventSource(
         `http://127.0.0.1:5000/events?id=${threadId}`,
       );
+
       function handleStream(data) {
         console.log(data);
+
+        setMessages((prevMessages) => {
+          const messages = [...prevMessages];
+          const lastMessageIndex = messages.length - 1;
+          const lastMessage = messages[lastMessageIndex];
+
+          if (lastMessage && lastMessage.type === "bot") {
+            // Append data to the last bot message
+            messages[lastMessageIndex] = {
+              ...lastMessage,
+              text: lastMessage.text + data,
+            };
+          } else {
+            // Add a new bot message with the incoming data
+            messages.push({ type: "bot", text: data });
+          }
+
+          return messages;
+        });
       }
+
       sse.onmessage = (e) => handleStream(e.data);
 
       // Cleanup function to close the EventSource when the component unmounts or threadId changes
@@ -33,9 +55,7 @@ const Widget = () => {
       });
   }, []);
 
-  const [messages, setMessages] = useState([]);
-
-  // add the bot messages to the array
+  // Add user messages to the array
   const addUserMessage = (userMessage) => {
     setMessages([...messages, { type: "user", text: userMessage }]);
   };
@@ -58,4 +78,5 @@ const Widget = () => {
     </div>
   );
 };
+
 export default Widget;
