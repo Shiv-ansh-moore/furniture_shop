@@ -15,7 +15,7 @@ const Widget = () => {
       );
 
       function handleStream(data) {
-        console.log(data);
+        console.log(data.message);
 
         setMessages((prevMessages) => {
           const messages = [...prevMessages];
@@ -26,18 +26,21 @@ const Widget = () => {
             // Append data to the last bot message
             messages[lastMessageIndex] = {
               ...lastMessage,
-              text: lastMessage.text + data,
+              text: lastMessage.text + data.message,
             };
           } else {
             // Add a new bot message with the incoming data
-            messages.push({ type: "bot", text: data });
+            messages.push({ type: "bot", text: data.message });
           }
 
           return messages;
         });
       }
 
-      sse.onmessage = (e) => handleStream(e.data);
+      sse.onmessage = (e) => {
+        const parsedData = JSON.parse(e.data);
+        handleStream(parsedData);
+      };
 
       // Cleanup function to close the EventSource when the component unmounts or threadId changes
       return () => {

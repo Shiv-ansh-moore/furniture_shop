@@ -1,4 +1,5 @@
 from flask import Flask, stream_with_context, Response, request, jsonify
+import json
 from openai import OpenAI
 from openai import AssistantEventHandler
 from typing_extensions import override
@@ -23,8 +24,6 @@ class EventHandler(AssistantEventHandler):
       
   @override
   def on_text_delta(self, delta, snapshot):
-      delta.value = delta.value.replace('\n', '  \n')
-      print(delta)
       client_queue = clients.get(self.thread_id)
       if client_queue:
           client_queue.put(delta.value)
@@ -72,7 +71,8 @@ def events():
         try:
             while True:
                 result = client_que.get()
-                yield f"data: {result}\n\n"
+                json_data = json.dumps({'message': result})
+                yield f"data: {json_data}\n\n"
         except GeneratorExit:
             clients.pop(thread_id, None)
     return Response(stream_with_context(event_stream()), content_type='text/event-stream')

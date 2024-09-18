@@ -29,9 +29,9 @@ const markdownComponents = {
 };
 
 const BotMessages = (props) => {
-  const testMessage = "This is line one.  \nThis is line two.\nThis is line three.";
+  // const testMessage = "This is line one.  \nThis is line two.\nThis is line three.";
   return (
-    <div className="m-3 rounded-xl bg-ikea-grey p-7">
+    <div className="m-3 rounded-xl bg-ikea-grey p-2">
       <ReactMarkdown
         components={markdownComponents}
         remarkPlugins={[remarkGfm]}
