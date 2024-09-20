@@ -13,7 +13,7 @@ const Form = (props) => {
         headers: {
           "Content-Type": "application/json", // Sending JSON data
         },
-        body: JSON.stringify({ input: message}),
+        body: JSON.stringify({ input: message }),
       });
       setMessage(""); // Clear the input field
     }

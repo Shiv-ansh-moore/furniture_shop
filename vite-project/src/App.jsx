@@ -1,10 +1,10 @@
-import Widget from "./components/Widget";
+import WidgetButton from './components/WidgetButton';
 import React, { useEffect, useState } from 'react';
 
 const App = () => {
   return (
     <>
-      <Widget />
+    <WidgetButton/>
     </>
   );
 };
