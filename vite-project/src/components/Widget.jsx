@@ -69,7 +69,7 @@ const Widget = () => {
       <div className="flex-1 overflow-auto">
         <div className="flex justify-center">
           <Logo />
-          <div className="absolute right-[20px] mt-[15px]">
+          <div className="absolute right-[20px] mt-[16px] p-0">
             <CloseButton />
           </div>
         </div>

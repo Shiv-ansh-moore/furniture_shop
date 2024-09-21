@@ -6,8 +6,8 @@ const WidgetButton = () => {
   return (
     <div>
       {/* Initially display Button if it is clicked display the Widget */}
-      <Button />
-      {/* <Widget/> */}
+      {/* <Button /> */}
+      <Widget/>
     </div>
   );
 };
