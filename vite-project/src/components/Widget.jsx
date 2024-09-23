@@ -3,11 +3,13 @@ import Form from "./Form";
 import User_messages from "./User_messages";
 import CloseButton from "./CloseButton";
 import Bot_messages from "./Bot_messages";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const Widget = () => {
   const [threadId, setThreadId] = useState();
   const [messages, setMessages] = useState([]);
+  const [fromOn, setForm] = useState(false);
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     if (threadId) {
@@ -56,8 +58,22 @@ const Widget = () => {
       .then((data) => {
         setThreadId(data.thread_id);
         console.log("Thread_id", data.thread_id);
+        setForm(true);
+        setMessages([
+          ...messages,
+          {
+            type: "bot",
+            text: "Hello! Welcome to our furniture shop. How can I assist you today? Are you looking for something specific or do you need some suggestions?",
+          },
+        ]);
       });
   }, []);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   // Add user messages to the array
   const addUserMessage = (userMessage) => {
@@ -66,7 +82,7 @@ const Widget = () => {
 
   return (
     <div className="fixed bottom-[20px] right-[20px] flex h-[80vh] max-h-[700px] w-[30vw] min-w-[450px] max-w-[500px] flex-col overflow-auto rounded-xl border-2 border-ikea-yellow pb-[60px]">
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto" ref={messagesEndRef}>
         <div className="flex justify-center">
           <Logo />
           <div className="absolute right-[20px] mt-[16px] p-0">
