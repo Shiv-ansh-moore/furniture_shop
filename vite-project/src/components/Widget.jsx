@@ -5,7 +5,7 @@ import CloseButton from "./CloseButton";
 import Bot_messages from "./Bot_messages";
 import { useEffect, useState, useRef } from "react";
 
-const Widget = () => {
+const Widget = ({handleButtonClick}) => {
   const [threadId, setThreadId] = useState();
   const [messages, setMessages] = useState([]);
   const [fromOn, setForm] = useState(false);
@@ -86,7 +86,7 @@ const Widget = () => {
         <div className="flex justify-center">
           <Logo />
           <div className="absolute right-[20px] mt-[16px] p-0">
-            <CloseButton />
+            <CloseButton handleButtonClick={handleButtonClick}/>
           </div>
         </div>
         {messages.map((message, index) =>
