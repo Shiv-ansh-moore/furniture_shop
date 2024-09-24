@@ -8,8 +8,16 @@ import { useEffect, useState, useRef } from "react";
 const Widget = ({ handleButtonClick }) => {
   const [threadId, setThreadId] = useState();
   const [messages, setMessages] = useState([]);
-  const [fromOn, setForm] = useState(false);
+  const [formOn, setForm] = useState(false);
   const messagesEndRef = useRef(null);
+
+  const setFromAbility = () => {
+    if (formOn) {
+      setForm(false);
+    } else {
+      setForm(true);
+    }
+  };
 
   useEffect(() => {
     if (threadId) {
@@ -19,25 +27,28 @@ const Widget = ({ handleButtonClick }) => {
 
       function handleStream(data) {
         console.log(data.message);
+        if (data.message === "message_done_69") {
+          setForm(true)
+        } else {
+          setMessages((prevMessages) => {
+            const messages = [...prevMessages];
+            const lastMessageIndex = messages.length - 1;
+            const lastMessage = messages[lastMessageIndex];
 
-        setMessages((prevMessages) => {
-          const messages = [...prevMessages];
-          const lastMessageIndex = messages.length - 1;
-          const lastMessage = messages[lastMessageIndex];
+            if (lastMessage && lastMessage.type === "bot") {
+              // Append data to the last bot message
+              messages[lastMessageIndex] = {
+                ...lastMessage,
+                text: lastMessage.text + data.message,
+              };
+            } else {
+              // Add a new bot message with the incoming data
+              messages.push({ type: "bot", text: data.message });
+            }
 
-          if (lastMessage && lastMessage.type === "bot") {
-            // Append data to the last bot message
-            messages[lastMessageIndex] = {
-              ...lastMessage,
-              text: lastMessage.text + data.message,
-            };
-          } else {
-            // Add a new bot message with the incoming data
-            messages.push({ type: "bot", text: data.message });
-          }
-
-          return messages;
-        });
+            return messages;
+          });
+        }
       }
 
       sse.onmessage = (e) => {
@@ -104,7 +115,12 @@ const Widget = ({ handleButtonClick }) => {
         )}
       </div>
       <div className="mt-1">
-        <Form addUserMessage={addUserMessage} thread_id={threadId} />
+        <Form
+          addUserMessage={addUserMessage}
+          thread_id={threadId}
+          formOn={formOn}
+          setForm={setForm}
+        />
       </div>
     </div>
   );

@@ -16,6 +16,7 @@ const Form = (props) => {
         body: JSON.stringify({ input: message }),
       });
       setMessage(""); // Clear the input field
+      props.setForm(false);
     }
   };
 
@@ -29,6 +30,7 @@ const Form = (props) => {
           value={message}
           onChange={(e) => setMessage(e.target.value)} // Update the message state on input change
           className="h-[40px] w-[100%] rounded-xl bg-ikea-grey p-1"
+          disabled = {!props.formOn}
         />
         <button
           type="submit"

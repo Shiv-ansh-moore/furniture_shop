@@ -22,7 +22,13 @@ class EventHandler(AssistantEventHandler):
   @override
   def on_text_created(self, text) -> None:
     print(f"\nassistant > ", end="", flush=True)
-      
+
+  @override
+  def on_end(self) -> None:
+      client_queue = clients.get(self.thread_id)
+      if client_queue:
+          client_queue.put("message_done_69")
+  
   @override
   def on_text_delta(self, delta, snapshot):
       client_queue = clients.get(self.thread_id)
