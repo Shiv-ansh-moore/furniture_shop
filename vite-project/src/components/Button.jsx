@@ -1,9 +1,9 @@
 import React from "react";
 
-const Button = () => {
+const Button = ({handleButtonClick}) => {
   return (
     <div className="fixed bottom-[20px] right-[20px]">
-      <button>
+      <button onClick={handleButtonClick}>
         <div className="m-0 flex h-[60px] w-[200px] flex-col justify-center rounded-3xl bg-ikea-yellow p-0">
           <div className="flex justify-center">
             <div className="flex flex-col justify-center">
