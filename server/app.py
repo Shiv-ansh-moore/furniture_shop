@@ -5,11 +5,12 @@ from openai import AssistantEventHandler
 from typing_extensions import override
 from flask_cors import CORS
 import queue
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-client = OpenAI(api_key="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")
+client = OpenAI(api_key=os.getenv("OPEN_AI_API_KEY"))
 
 clients = {}
 
