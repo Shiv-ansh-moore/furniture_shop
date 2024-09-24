@@ -11,13 +11,6 @@ const Widget = ({ handleButtonClick }) => {
   const [formOn, setForm] = useState(false);
   const messagesEndRef = useRef(null);
 
-  const setFromAbility = () => {
-    if (formOn) {
-      setForm(false);
-    } else {
-      setForm(true);
-    }
-  };
 
   useEffect(() => {
     if (threadId) {
