@@ -5,7 +5,7 @@ import CloseButton from "./CloseButton";
 import Bot_messages from "./Bot_messages";
 import { useEffect, useState, useRef } from "react";
 
-const Widget = ({handleButtonClick}) => {
+const Widget = ({ handleButtonClick }) => {
   const [threadId, setThreadId] = useState();
   const [messages, setMessages] = useState([]);
   const [fromOn, setForm] = useState(false);
@@ -54,7 +54,12 @@ const Widget = ({handleButtonClick}) => {
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000")
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Server Error");
+        }
+        return response.json();
+      })
       .then((data) => {
         setThreadId(data.thread_id);
         console.log("Thread_id", data.thread_id);
@@ -66,7 +71,8 @@ const Widget = ({handleButtonClick}) => {
             text: "Hello! Welcome to our furniture shop. How can I assist you today? Are you looking for something specific or do you need some suggestions?",
           },
         ]);
-      });
+      })
+      .catch((error) => console.log("Error fetching data from server"));
   }, []);
 
   useEffect(() => {
@@ -86,7 +92,7 @@ const Widget = ({handleButtonClick}) => {
         <div className="flex justify-center">
           <Logo />
           <div className="absolute right-[20px] mt-[16px] p-0">
-            <CloseButton handleButtonClick={handleButtonClick}/>
+            <CloseButton handleButtonClick={handleButtonClick} />
           </div>
         </div>
         {messages.map((message, index) =>

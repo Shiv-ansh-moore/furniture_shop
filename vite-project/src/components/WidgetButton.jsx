@@ -11,7 +11,6 @@ const WidgetButton = () => {
     <div>
       {showWidget ? <Widget handleButtonClick={handleButtonClick}/> : <Button handleButtonClick={handleButtonClick}/>}
       {/* Initially display Button if it is clicked display the Widget */}
-      {/* <Button /> */}
     </div>
   );
 };
