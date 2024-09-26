@@ -3,14 +3,15 @@ import Form from "./Form";
 import User_messages from "./User_messages";
 import CloseButton from "./CloseButton";
 import Bot_messages from "./Bot_messages";
+import Dot_spinner from "./Dot_spinner";
 import { useEffect, useState, useRef } from "react";
 
 const Widget = ({ handleButtonClick }) => {
   const [threadId, setThreadId] = useState();
   const [messages, setMessages] = useState([]);
   const [formOn, setForm] = useState(false);
+  const [loading, setLoading] = useState(true);
   const messagesEndRef = useRef(null);
-
 
   useEffect(() => {
     if (threadId) {
@@ -21,7 +22,9 @@ const Widget = ({ handleButtonClick }) => {
       function handleStream(data) {
         console.log(data.message);
         if (data.message === "message_done_69") {
-          setForm(true)
+          setForm(true);
+        } else if (data.message === "message_start_69") {
+          setLoading(false);
         } else {
           setMessages((prevMessages) => {
             const messages = [...prevMessages];
@@ -68,6 +71,7 @@ const Widget = ({ handleButtonClick }) => {
         setThreadId(data.thread_id);
         console.log("Thread_id", data.thread_id);
         setForm(true);
+        setLoading(false);
         setMessages([
           ...messages,
           {
@@ -106,6 +110,7 @@ const Widget = ({ handleButtonClick }) => {
             <Bot_messages key={index} message={message} />
           ),
         )}
+        {loading ? <Dot_spinner /> : null}
       </div>
       <div className="mt-1">
         <Form
@@ -113,6 +118,7 @@ const Widget = ({ handleButtonClick }) => {
           thread_id={threadId}
           formOn={formOn}
           setForm={setForm}
+          setLoading={setLoading}
         />
       </div>
     </div>

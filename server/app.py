@@ -21,7 +21,9 @@ class EventHandler(AssistantEventHandler):
 
   @override
   def on_text_created(self, text) -> None:
-    print(f"\nassistant > ", end="", flush=True)
+    client_queue = clients.get(self.thread_id)
+    if client_queue:
+        client_queue.put("message_start_69")
 
   @override
   def on_end(self) -> None:
