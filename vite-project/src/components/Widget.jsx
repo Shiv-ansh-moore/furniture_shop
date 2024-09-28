@@ -11,7 +11,7 @@ const Widget = ({ handleButtonClick }) => {
   const [messages, setMessages] = useState([]);
   const [formOn, setForm] = useState(false);
   const [loading, setLoading] = useState(true);
-  const messagesEndRef = useRef(null);
+  // const messagesEndRef = useRef(null);
 
   useEffect(() => {
     if (threadId) {
@@ -83,11 +83,11 @@ const Widget = ({ handleButtonClick }) => {
       .catch((error) => console.log("Error fetching data from server"));
   }, []);
 
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
-    }
-  }, [messages]);
+  // useEffect(() => {
+  //   if (messagesEndRef.current) {
+  //     messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+  //   }
+  // }, [messages]);
 
   // Add user messages to the array
   const addUserMessage = (userMessage) => {
@@ -96,7 +96,7 @@ const Widget = ({ handleButtonClick }) => {
 
   return (
     <div className="fixed bottom-[20px] right-[20px] flex h-[80vh] max-h-[700px] w-[30vw] min-w-[450px] max-w-[500px] flex-col overflow-auto rounded-xl border-2 border-ikea-yellow pb-[60px]">
-      <div className="flex-1 overflow-auto" ref={messagesEndRef}>
+      <div className="flex-1 overflow-auto">
         <div className="flex justify-center">
           <Logo />
           <div className="absolute right-[20px] mt-[16px] p-0">

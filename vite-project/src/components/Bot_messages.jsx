@@ -10,7 +10,7 @@ const markdownComponents = {
   ),
   p: ({ node, ...props }) => <p className="mb-2 text-base" {...props} />,
   a: ({ node, ...props }) => (
-    <a className="text-blue-500 underline" {...props} />
+    <a target="_blank" rel="noopener noreferrer" className="text-blue-500 underline" {...props} />
   ),
   img: ({ node, ...props }) => (
     <img className="ml-3 w-1/2 rounded-lg shadow-md" {...props} />
