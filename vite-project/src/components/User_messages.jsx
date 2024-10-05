@@ -1,12 +1,10 @@
 const User_messages = (props) => {
   return (
-    <div className="flex justify-end">
-      <div className="pb-[10px] pr-[10px]">
-        <div className="ml-3 mr-3 flex h-[40px] flex-col justify-center rounded-xl bg-ikea-grey p-2">
-          <div>{props.message.text}</div>
+      <div className="flex justify-end">
+        <div className="mb-3 ml-3 mr-3 rounded-xl bg-ikea-grey p-2 max-w-[72.5%] break-words">
+          {props.message.text}
         </div>
       </div>
-    </div>
   );
 };
 export default User_messages;
