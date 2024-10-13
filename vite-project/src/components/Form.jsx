@@ -31,7 +31,7 @@ const Form = (props) => {
           name="userMessage"
           value={message}
           onChange={(e) => setMessage(e.target.value)} // Update the message state on input change
-          className="h-[40px] w-[100%] rounded-xl bg-ikea-grey p-1"
+          className="h-[40px] w-[90%] rounded-xl bg-ikea-grey p-1"
           disabled={!props.formOn}
         />
         <button
