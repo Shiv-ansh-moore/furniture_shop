@@ -1,4 +1,5 @@
 import React from "react";
+import smile from "../assets/images/icons8-chat-bot-50 (1).png"
 
 const Button = ({handleButtonClick}) => {
   return (
@@ -12,7 +13,7 @@ const Button = ({handleButtonClick}) => {
             <div>
               <img
                 className="m-2 h-[30px]"
-                src="/images/icons8-chat-bot-50 (1).png"
+                src={smile}
                 alt="Chat Icon"
               />
             </div>

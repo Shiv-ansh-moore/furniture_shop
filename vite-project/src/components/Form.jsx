@@ -1,4 +1,5 @@
 import { useState } from "react";
+import upload from "../assets/images/upload-icon.png"
 
 const Form = (props) => {
   const [message, setMessage] = useState("");
@@ -39,7 +40,7 @@ const Form = (props) => {
         >
           <img
             className="h-[30px]"
-            src="/images/upload-icon.png"
+            src={upload}
             alt="upload"
           ></img>
         </button>

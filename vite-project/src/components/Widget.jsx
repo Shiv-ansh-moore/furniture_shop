@@ -95,7 +95,7 @@ const Widget = ({ handleButtonClick }) => {
   };
 
   return (
-    <div className="fixed bottom-[20px] right-[20px] flex h-[80vh] max-h-[700px] w-[30vw] min-w-[450px] max-w-[500px] flex-col overflow-auto rounded-xl border-2 border-ikea-yellow pb-[60px]">
+    <div className="fixed bottom-[20px] right-[20px] flex h-[80vh] max-h-[700px] w-[30vw] min-w-[450px] max-w-[500px] flex-col overflow-auto rounded-xl border-2 border-ikea-yellow bg-white pb-[60px]">
       <div className="flex-1 overflow-auto">
         <div className="flex justify-center">
           <Logo />
